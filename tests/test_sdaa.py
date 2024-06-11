@@ -6,20 +6,20 @@ from pathlib import Path
 import pytest
 import torch
 
-from tests import CUDA_DEVICE_COUNT, CUDA_IS_AVAILABLE, MODEL, SOURCE
+from tests import SDAA_DEVICE_COUNT, SDAA_IS_AVAILABLE, MODEL, SOURCE
 from ultralytics import YOLO
 from ultralytics.cfg import TASK2DATA, TASK2MODEL, TASKS
 from ultralytics.utils import ASSETS, WEIGHTS_DIR
 
 
 def test_checks():
-    """Validate CUDA settings against torch CUDA functions."""
-    assert torch.cuda.is_available() == CUDA_IS_AVAILABLE
-    assert torch.cuda.device_count() == CUDA_DEVICE_COUNT
+    """Validate SDAA settings against torch SDAA functions."""
+    assert torch.sdaa.is_available() == SDAA_IS_AVAILABLE
+    assert torch.sdaa.device_count() == SDAA_DEVICE_COUNT
 
 
 @pytest.mark.slow
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 @pytest.mark.parametrize(
     "task, dynamic, int8, half, batch",
     [  # generate all combinations but exclude those where both int8 and half are True
@@ -48,15 +48,15 @@ def test_export_engine_matrix(task, dynamic, int8, half, batch):
     Path(file).with_suffix(".cache").unlink() if int8 else None  # cleanup INT8 cache
 
 
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_train():
     """Test model training on a minimal dataset."""
-    device = 0 if CUDA_DEVICE_COUNT == 1 else [0, 1]
+    device = 0 if SDAA_DEVICE_COUNT == 1 else [0, 1]
     YOLO(MODEL).train(data="coco8.yaml", imgsz=64, epochs=1, device=device)  # requires imgsz>=64
 
 
 @pytest.mark.slow
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_predict_multiple_devices():
     """Validate model prediction on multiple devices."""
     model = YOLO("yolov8n.pt")
@@ -65,32 +65,32 @@ def test_predict_multiple_devices():
     _ = model(SOURCE)  # CPU inference
     assert str(model.device) == "cpu"
 
-    model = model.to("cuda:0")
-    assert str(model.device) == "cuda:0"
-    _ = model(SOURCE)  # CUDA inference
-    assert str(model.device) == "cuda:0"
+    model = model.to("sdaa:0")
+    assert str(model.device) == "sdaa:0"
+    _ = model(SOURCE)  # SDAA inference
+    assert str(model.device) == "sdaa:0"
 
     model = model.cpu()
     assert str(model.device) == "cpu"
     _ = model(SOURCE)  # CPU inference
     assert str(model.device) == "cpu"
 
-    model = model.cuda()
-    assert str(model.device) == "cuda:0"
-    _ = model(SOURCE)  # CUDA inference
-    assert str(model.device) == "cuda:0"
+    model = model.sdaa()
+    assert str(model.device) == "sdaa:0"
+    _ = model(SOURCE)  # SDAA inference
+    assert str(model.device) == "sdaa:0"
 
 
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_autobatch():
     """Check batch size for YOLO model using autobatch."""
     from ultralytics.utils.autobatch import check_train_batch_size
 
-    check_train_batch_size(YOLO(MODEL).model.cuda(), imgsz=128, amp=True)
+    check_train_batch_size(YOLO(MODEL).model.sdaa(), imgsz=128, amp=True)
 
 
 @pytest.mark.slow
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_utils_benchmarks():
     """Profile YOLO models for performance benchmarks."""
     from ultralytics.utils.benchmarks import ProfileModels
@@ -100,7 +100,7 @@ def test_utils_benchmarks():
     ProfileModels([MODEL], imgsz=32, half=False, min_time=1, num_timed_runs=3, num_warmup_runs=1).profile()
 
 
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_predict_sam():
     """Test SAM model prediction with various prompts."""
     from ultralytics import SAM

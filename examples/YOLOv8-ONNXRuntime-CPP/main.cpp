@@ -155,8 +155,8 @@ void DetectTest()
     params.iouThreshold = 0.5;
     params.modelPath = "yolov8n.onnx";
     params.imgSize = { 640, 640 };
-#ifdef USE_CUDA
-    params.cudaEnable = true;
+#ifdef USE_SDAA
+    params.sdaaEnable = true;
 
     // GPU FP32 inference
     params.modelType = YOLO_DETECT_V8;
@@ -167,7 +167,7 @@ void DetectTest()
 #else
     // CPU inference
     params.modelType = YOLO_DETECT_V8;
-    params.cudaEnable = false;
+    params.sdaaEnable = false;
 
 #endif
     yoloDetector->CreateSession(params);

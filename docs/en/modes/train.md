@@ -86,7 +86,7 @@ Multi-GPU training allows for more efficient utilization of available hardware r
 
 !!! Example "Multi-GPU Training Example"
 
-    To train with 2 GPUs, CUDA devices 0 and 1 use the following commands. Expand to additional GPUs as required.
+    To train with 2 GPUs, SDAA devices 0 and 1 use the following commands. Expand to additional GPUs as required.
 
     === "Python"
 
@@ -231,7 +231,7 @@ The training settings for YOLO models encompass various hyperparameters and conf
     The `batch` argument can be configured in three ways:
 
     - **Fixed Batch Size**: Set an integer value (e.g., `batch=16`), specifying the number of images per batch directly.
-    - **Auto Mode (60% GPU Memory)**: Use `batch=-1` to automatically adjust batch size for approximately 60% CUDA memory utilization.
+    - **Auto Mode (60% GPU Memory)**: Use `batch=-1` to automatically adjust batch size for approximately 60% SDAA memory utilization.
     - **Auto Mode with Utilization Fraction**: Set a fraction value (e.g., `batch=0.70`) to adjust batch size based on the specified fraction of GPU memory usage.
 
 ## Augmentation Settings and Hyperparameters

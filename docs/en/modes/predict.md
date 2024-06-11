@@ -374,7 +374,7 @@ Inference arguments:
 | `iou`           | `float`        | `0.7`                  | Intersection Over Union (IoU) threshold for Non-Maximum Suppression (NMS). Lower values result in fewer detections by eliminating overlapping boxes, useful for reducing duplicates.                                                 |
 | `imgsz`         | `int or tuple` | `640`                  | Defines the image size for inference. Can be a single integer `640` for square resizing or a (height, width) tuple. Proper sizing can improve detection accuracy and processing speed.                                               |
 | `half`          | `bool`         | `False`                | Enables half-precision (FP16) inference, which can speed up model inference on supported GPUs with minimal impact on accuracy.                                                                                                       |
-| `device`        | `str`          | `None`                 | Specifies the device for inference (e.g., `cpu`, `cuda:0` or `0`). Allows users to select between CPU, a specific GPU, or other compute devices for model execution.                                                                 |
+| `device`        | `str`          | `None`                 | Specifies the device for inference (e.g., `cpu`, `sdaa:0` or `0`). Allows users to select between CPU, a specific GPU, or other compute devices for model execution.                                                                 |
 | `max_det`       | `int`          | `300`                  | Maximum number of detections allowed per image. Limits the total number of objects the model can detect in a single inference, preventing excessive outputs in dense scenes.                                                         |
 | `vid_stride`    | `int`          | `1`                    | Frame stride for video inputs. Allows skipping frames in videos to speed up processing at the cost of temporal resolution. A value of 1 processes every frame, higher values skip frames.                                            |
 | `stream_buffer` | `bool`         | `False`                | Determines if all frames should be buffered when processing video streams (`True`), or if the model should return the most recent frame (`False`). Useful for real-time applications.                                                |
@@ -479,7 +479,7 @@ All Ultralytics `predict()` calls will return a list of `Results` objects:
 | `update()`    | `None`          | Update the boxes, masks, and probs attributes of the Results object.                |
 | `cpu()`       | `Results`       | Return a copy of the Results object with all tensors on CPU memory.                 |
 | `numpy()`     | `Results`       | Return a copy of the Results object with all tensors as numpy arrays.               |
-| `cuda()`      | `Results`       | Return a copy of the Results object with all tensors on GPU memory.                 |
+| `sdaa()`      | `Results`       | Return a copy of the Results object with all tensors on GPU memory.                 |
 | `to()`        | `Results`       | Return a copy of the Results object with tensors on the specified device and dtype. |
 | `new()`       | `Results`       | Return a new Results object with the same image, path, and names.                   |
 | `plot()`      | `numpy.ndarray` | Plots the detection results. Returns a numpy array of the annotated image.          |
@@ -518,7 +518,7 @@ Here is a table for the `Boxes` class methods and properties, including their na
 | --------- | ------------------------- | ------------------------------------------------------------------ |
 | `cpu()`   | Method                    | Move the object to CPU memory.                                     |
 | `numpy()` | Method                    | Convert the object to a numpy array.                               |
-| `cuda()`  | Method                    | Move the object to CUDA memory.                                    |
+| `sdaa()`  | Method                    | Move the object to SDAA memory.                                    |
 | `to()`    | Method                    | Move the object to the specified device.                           |
 | `xyxy`    | Property (`torch.Tensor`) | Return the boxes in xyxy format.                                   |
 | `conf`    | Property (`torch.Tensor`) | Return the confidence values of the boxes.                         |
@@ -556,7 +556,7 @@ Here is a table for the `Masks` class methods and properties, including their na
 | --------- | ------------------------- | --------------------------------------------------------------- |
 | `cpu()`   | Method                    | Returns the masks tensor on CPU memory.                         |
 | `numpy()` | Method                    | Returns the masks tensor as a numpy array.                      |
-| `cuda()`  | Method                    | Returns the masks tensor on GPU memory.                         |
+| `sdaa()`  | Method                    | Returns the masks tensor on GPU memory.                         |
 | `to()`    | Method                    | Returns the masks tensor with the specified device and dtype.   |
 | `xyn`     | Property (`torch.Tensor`) | A list of normalized segments represented as tensors.           |
 | `xy`      | Property (`torch.Tensor`) | A list of segments in pixel coordinates represented as tensors. |
@@ -589,7 +589,7 @@ Here is a table for the `Keypoints` class methods and properties, including thei
 | --------- | ------------------------- | ----------------------------------------------------------------- |
 | `cpu()`   | Method                    | Returns the keypoints tensor on CPU memory.                       |
 | `numpy()` | Method                    | Returns the keypoints tensor as a numpy array.                    |
-| `cuda()`  | Method                    | Returns the keypoints tensor on GPU memory.                       |
+| `sdaa()`  | Method                    | Returns the keypoints tensor on GPU memory.                       |
 | `to()`    | Method                    | Returns the keypoints tensor with the specified device and dtype. |
 | `xyn`     | Property (`torch.Tensor`) | A list of normalized keypoints represented as tensors.            |
 | `xy`      | Property (`torch.Tensor`) | A list of keypoints in pixel coordinates represented as tensors.  |
@@ -623,7 +623,7 @@ Here's a table summarizing the methods and properties for the `Probs` class:
 | ---------- | ------------------------- | ----------------------------------------------------------------------- |
 | `cpu()`    | Method                    | Returns a copy of the probs tensor on CPU memory.                       |
 | `numpy()`  | Method                    | Returns a copy of the probs tensor as a numpy array.                    |
-| `cuda()`   | Method                    | Returns a copy of the probs tensor on GPU memory.                       |
+| `sdaa()`   | Method                    | Returns a copy of the probs tensor on GPU memory.                       |
 | `to()`     | Method                    | Returns a copy of the probs tensor with the specified device and dtype. |
 | `top1`     | Property (`int`)          | Index of the top 1 class.                                               |
 | `top5`     | Property (`list[int]`)    | Indices of the top 5 classes.                                           |
@@ -658,7 +658,7 @@ Here is a table for the `OBB` class methods and properties, including their name
 | ----------- | ------------------------- | --------------------------------------------------------------------- |
 | `cpu()`     | Method                    | Move the object to CPU memory.                                        |
 | `numpy()`   | Method                    | Convert the object to a numpy array.                                  |
-| `cuda()`    | Method                    | Move the object to CUDA memory.                                       |
+| `sdaa()`    | Method                    | Move the object to SDAA memory.                                       |
 | `to()`      | Method                    | Move the object to the specified device.                              |
 | `conf`      | Property (`torch.Tensor`) | Return the confidence values of the boxes.                            |
 | `cls`       | Property (`torch.Tensor`) | Return the class values of the boxes.                                 |

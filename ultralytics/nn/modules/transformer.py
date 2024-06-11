@@ -226,7 +226,7 @@ class MSDeformAttn(nn.Module):
         if d_model % n_heads != 0:
             raise ValueError(f"d_model must be divisible by n_heads, but got {d_model} and {n_heads}")
         _d_per_head = d_model // n_heads
-        # Better to set _d_per_head to a power of 2 which is more efficient in a CUDA implementation
+        # Better to set _d_per_head to a power of 2 which is more efficient in a SDAA implementation
         assert _d_per_head * n_heads == d_model, "`d_model` must be divisible by `n_heads`"
 
         self.im2col_step = 64

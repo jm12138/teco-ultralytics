@@ -46,9 +46,9 @@ class BaseTensor(SimpleClass):
         """Return a copy of the tensor as a numpy array."""
         return self if isinstance(self.data, np.ndarray) else self.__class__(self.data.numpy(), self.orig_shape)
 
-    def cuda(self):
+    def sdaa(self):
         """Return a copy of the tensor on GPU memory."""
-        return self.__class__(torch.as_tensor(self.data).cuda(), self.orig_shape)
+        return self.__class__(torch.as_tensor(self.data).sdaa(), self.orig_shape)
 
     def to(self, *args, **kwargs):
         """Return a copy of the tensor with the specified device and dtype."""
@@ -82,7 +82,7 @@ class Results(SimpleClass):
         update(boxes=None, masks=None, probs=None, obb=None): Updates object attributes with new detection results.
         cpu(): Returns a copy of the Results object with all tensors on CPU memory.
         numpy(): Returns a copy of the Results object with all tensors as numpy arrays.
-        cuda(): Returns a copy of the Results object with all tensors on GPU memory.
+        sdaa(): Returns a copy of the Results object with all tensors on GPU memory.
         to(*args, **kwargs): Returns a copy of the Results object with tensors on a specified device and dtype.
         new(): Returns a new Results object with the same image, path, and names.
         plot(...): Plots detection results on an input image, returning an annotated image.
@@ -148,7 +148,7 @@ class Results(SimpleClass):
     def _apply(self, fn, *args, **kwargs):
         """
         Applies a function to all non-empty attributes and returns a new Results object with modified attributes. This
-        function is internally called by methods like .to(), .cuda(), .cpu(), etc.
+        function is internally called by methods like .to(), .sdaa(), .cpu(), etc.
 
         Args:
             fn (str): The name of the function to apply.
@@ -173,9 +173,9 @@ class Results(SimpleClass):
         """Return a copy of the Results object with all tensors as numpy arrays."""
         return self._apply("numpy")
 
-    def cuda(self):
+    def sdaa(self):
         """Return a copy of the Results object with all tensors on GPU memory."""
-        return self._apply("cuda")
+        return self._apply("sdaa")
 
     def to(self, *args, **kwargs):
         """Return a copy of the Results object with tensors on the specified device and dtype."""
@@ -461,7 +461,7 @@ class Boxes(BaseTensor):
     Methods:
         cpu(): Moves the boxes to CPU memory.
         numpy(): Converts the boxes to a numpy array format.
-        cuda(): Moves the boxes to CUDA (GPU) memory.
+        sdaa(): Moves the boxes to SDAA (GPU) memory.
         to(device, dtype=None): Moves the boxes to the specified device.
     """
 
@@ -539,7 +539,7 @@ class Masks(BaseTensor):
     Methods:
         cpu(): Returns the masks tensor on CPU memory.
         numpy(): Returns the masks tensor as a numpy array.
-        cuda(): Returns the masks tensor on GPU memory.
+        sdaa(): Returns the masks tensor on GPU memory.
         to(device, dtype): Returns the masks tensor with the specified device and dtype.
     """
 
@@ -580,7 +580,7 @@ class Keypoints(BaseTensor):
     Methods:
         cpu(): Returns a copy of the keypoints tensor on CPU memory.
         numpy(): Returns a copy of the keypoints tensor as a numpy array.
-        cuda(): Returns a copy of the keypoints tensor on GPU memory.
+        sdaa(): Returns a copy of the keypoints tensor on GPU memory.
         to(device, dtype): Returns a copy of the keypoints tensor with the specified device and dtype.
     """
 
@@ -630,7 +630,7 @@ class Probs(BaseTensor):
     Methods:
         cpu(): Returns a copy of the probs tensor on CPU memory.
         numpy(): Returns a copy of the probs tensor as a numpy array.
-        cuda(): Returns a copy of the probs tensor on GPU memory.
+        sdaa(): Returns a copy of the probs tensor on GPU memory.
         to(): Returns a copy of the probs tensor with the specified device and dtype.
     """
 
@@ -686,7 +686,7 @@ class OBB(BaseTensor):
     Methods:
         cpu(): Move the object to CPU memory.
         numpy(): Convert the object to a numpy array.
-        cuda(): Move the object to CUDA memory.
+        sdaa(): Move the object to SDAA memory.
         to(*args, **kwargs): Move the object to the specified device.
     """
 

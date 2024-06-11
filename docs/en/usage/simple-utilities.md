@@ -40,7 +40,7 @@ auto_annotate(  # (1)!
     data="path/to/new/data",
     det_model="yolov8n.pt",
     sam_model="mobile_sam.pt",
-    device="cuda",
+    device="sdaa",
     output_dir="path/to/save_labels",
 )
 ```
@@ -452,7 +452,7 @@ Check duration for code to run/process either using `with` or as a decorator.
 ```python
 from ultralytics.utils.ops import Profile
 
-with Profile(device="cuda:0") as dt:
+with Profile(device="sdaa:0") as dt:
     pass  # operation to measure
 
 print(dt)

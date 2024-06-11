@@ -39,7 +39,7 @@ class Profile(contextlib.ContextDecorator):
         """
         self.t = t
         self.device = device
-        self.cuda = bool(device and str(device).startswith("cuda"))
+        self.sdaa = bool(device and str(device).startswith("sdaa"))
 
     def __enter__(self):
         """Start timing."""
@@ -57,8 +57,8 @@ class Profile(contextlib.ContextDecorator):
 
     def time(self):
         """Get current time."""
-        if self.cuda:
-            torch.cuda.synchronize(self.device)
+        if self.sdaa:
+            torch.sdaa.synchronize(self.device)
         return time.time()
 
 

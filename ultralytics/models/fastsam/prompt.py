@@ -16,13 +16,13 @@ class FastSAMPrompt:
     Fast Segment Anything Model class for image annotation and visualization.
 
     Attributes:
-        device (str): Computing device ('cuda' or 'cpu').
+        device (str): Computing device ('sdaa' or 'cpu').
         results: Object detection or segmentation results.
         source: Source image or image path.
         clip: CLIP model for linear assignment.
     """
 
-    def __init__(self, source, results, device="cuda") -> None:
+    def __init__(self, source, results, device="sdaa") -> None:
         """Initializes FastSAMPrompt with given source, results and device, and assigns clip for linear assignment."""
         if isinstance(source, (str, Path)) and os.path.isdir(source):
             raise ValueError("FastSAM only accepts image paths and PIL Image sources, not directories.")

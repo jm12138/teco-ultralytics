@@ -56,12 +56,12 @@ You can install the Ultralytics package from the conda-forge channel. Execute th
 conda install -c conda-forge ultralytics
 ```
 
-### Note on CUDA Environment
+### Note on SDAA Environment
 
-If you're working in a CUDA-enabled environment, it's a good practice to install `ultralytics`, `pytorch`, and `pytorch-cuda` together to resolve any conflicts:
+If you're working in a SDAA-enabled environment, it's a good practice to install `ultralytics`, `pytorch`, and `pytorch-sdaa` together to resolve any conflicts:
 
 ```bash
-conda install -c pytorch -c nvidia -c conda-forge pytorch torchvision pytorch-cuda=11.8 ultralytics
+conda install -c pytorch -c nvidia -c conda-forge pytorch torchvision pytorch-sdaa=11.8 ultralytics
 ```
 
 ---

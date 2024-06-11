@@ -203,7 +203,7 @@ torch::Tensor scale_boxes(const std::vector<int>& img1_shape, torch::Tensor& box
 
 int main() {
     // Device
-    torch::Device device(torch::cuda::is_available() ? torch::kCUDA :torch::kCPU);
+    torch::Device device(torch::sdaa::is_available() ? torch::kSDAA :torch::kCPU);
 
     // Note that in this example the classes are hard-coded
     std::vector<std::string> classes {"person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat", "traffic light", "fire hydrant",

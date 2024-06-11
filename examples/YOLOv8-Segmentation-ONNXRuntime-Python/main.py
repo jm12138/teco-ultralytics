@@ -25,7 +25,7 @@ class YOLOv8Seg:
         # Build Ort session
         self.session = ort.InferenceSession(
             onnx_model,
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
+            providers=["SDAAExecutionProvider", "CPUExecutionProvider"]
             if ort.get_device() == "GPU"
             else ["CPUExecutionProvider"],
         )

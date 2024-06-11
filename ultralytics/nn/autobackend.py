@@ -128,10 +128,10 @@ class AutoBackend(nn.Module):
         model, metadata = None, None
 
         # Set device
-        cuda = torch.cuda.is_available() and device.type != "cpu"  # use CUDA
-        if cuda and not any([nn_module, pt, jit, engine, onnx]):  # GPU dataloader formats
+        sdaa = torch.sdaa.is_available() and device.type != "cpu"  # use SDAA
+        if sdaa and not any([nn_module, pt, jit, engine, onnx]):  # GPU dataloader formats
             device = torch.device("cpu")
-            cuda = False
+            sdaa = False
 
         # Download if not local
         if not (pt or triton or nn_module):
@@ -147,7 +147,7 @@ class AutoBackend(nn.Module):
             stride = max(int(model.stride.max()), 32)  # model stride
             names = model.module.names if hasattr(model, "module") else model.names  # get class names
             model.half() if fp16 else model.float()
-            self.model = model  # explicitly assign for to(), cpu(), cuda(), half()
+            self.model = model  # explicitly assign for to(), cpu(), sdaa(), half()
             pt = True
 
         # PyTorch
@@ -162,7 +162,7 @@ class AutoBackend(nn.Module):
             stride = max(int(model.stride.max()), 32)  # model stride
             names = model.module.names if hasattr(model, "module") else model.names  # get class names
             model.half() if fp16 else model.float()
-            self.model = model  # explicitly assign for to(), cpu(), cuda(), half()
+            self.model = model  # explicitly assign for to(), cpu(), sdaa(), half()
 
         # TorchScript
         elif jit:
@@ -182,13 +182,13 @@ class AutoBackend(nn.Module):
         # ONNX Runtime
         elif onnx:
             LOGGER.info(f"Loading {w} for ONNX Runtime inference...")
-            check_requirements(("onnx", "onnxruntime-gpu" if cuda else "onnxruntime"))
+            check_requirements(("onnx", "onnxruntime-gpu" if sdaa else "onnxruntime"))
             if IS_RASPBERRYPI or IS_JETSON:
                 # Fix 'numpy.linalg._umath_linalg' has no attribute '_ilp64' for TF SavedModel on RPi and Jetson
                 check_requirements("numpy==1.23.5")
             import onnxruntime
 
-            providers = ["CUDAExecutionProvider", "CPUExecutionProvider"] if cuda else ["CPUExecutionProvider"]
+            providers = ["SDAAExecutionProvider", "CPUExecutionProvider"] if sdaa else ["CPUExecutionProvider"]
             session = onnxruntime.InferenceSession(w, providers=providers)
             output_names = [x.name for x in session.get_outputs()]
             metadata = session.get_modelmeta().custom_metadata_map
@@ -229,7 +229,7 @@ class AutoBackend(nn.Module):
                 import tensorrt as trt  # noqa
             check_version(trt.__version__, "7.0.0", hard=True)  # require tensorrt>=7.0.0
             if device.type == "cpu":
-                device = torch.device("cuda:0")
+                device = torch.device("sdaa:0")
             Binding = namedtuple("Binding", ("name", "dtype", "shape", "data", "ptr"))
             logger = trt.Logger(trt.Logger.INFO)
             # Read file
@@ -239,7 +239,7 @@ class AutoBackend(nn.Module):
                     metadata = json.loads(f.read(meta_len).decode("utf-8"))  # read metadata
                 except UnicodeDecodeError:
                     f.seek(0)  # engine file may lack embedded Ultralytics metadata
-                model = runtime.deserialize_cuda_engine(f.read())  # read engine
+                model = runtime.deserialize_sdaa_engine(f.read())  # read engine
 
             # Model context
             try:
@@ -356,14 +356,14 @@ class AutoBackend(nn.Module):
         # PaddlePaddle
         elif paddle:
             LOGGER.info(f"Loading {w} for PaddlePaddle inference...")
-            check_requirements("paddlepaddle-gpu" if cuda else "paddlepaddle")
+            check_requirements("paddlepaddle-gpu" if sdaa else "paddlepaddle")
             import paddle.inference as pdi  # noqa
 
             w = Path(w)
             if not w.is_file():  # if not *.pdmodel
                 w = next(w.rglob("*.pdmodel"))  # get *.pdmodel file from *_paddle_model dir
             config = pdi.Config(str(w), str(w.with_suffix(".pdiparams")))
-            if cuda:
+            if sdaa:
                 config.enable_use_gpu(memory_pool_init_size_mb=2048, device_id=0)
             predictor = pdi.create_predictor(config)
             input_handle = predictor.get_input_handle(predictor.get_input_names()[0])
@@ -377,7 +377,7 @@ class AutoBackend(nn.Module):
             import ncnn as pyncnn
 
             net = pyncnn.Net()
-            net.opt.use_vulkan_compute = cuda
+            net.opt.use_vulkan_compute = sdaa
             w = Path(w)
             if not w.is_file():  # if not *.param
                 w = next(w.glob("*.param"))  # get *.param file from *_ncnn_model dir

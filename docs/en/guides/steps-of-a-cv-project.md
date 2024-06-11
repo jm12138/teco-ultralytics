@@ -124,7 +124,7 @@ Once your dataset is ready for training, you can focus on setting up the necessa
 First, you'll need to make sure your environment is configured correctly. Typically, this includes the following:
 
 - Installing essential libraries and frameworks like TensorFlow, PyTorch, or [Ultralytics](../quickstart.md).
-- If you are using a GPU, installing libraries like CUDA and cuDNN will help enable GPU acceleration and speed up the training process.
+- If you are using a GPU, installing libraries like SDAA and cuDNN will help enable GPU acceleration and speed up the training process.
 
 Then, you can load your training and validation datasets into your environment. Normalize and preprocess the data through resizing, format conversion, or augmentation. With your model selected, configure the layers and specify hyperparameters. Compile the model by setting the loss function, optimizer, and performance metrics.
 

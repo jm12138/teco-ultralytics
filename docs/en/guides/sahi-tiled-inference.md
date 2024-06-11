@@ -95,7 +95,7 @@ detection_model = AutoDetectionModel.from_pretrained(
     model_type="yolov8",
     model_path=yolov8_model_path,
     confidence_threshold=0.3,
-    device="cpu",  # or 'cuda:0'
+    device="cpu",  # or 'sdaa:0'
 )
 ```
 
@@ -158,7 +158,7 @@ For batch prediction on a directory of images:
 predict(
     model_type="yolov8",
     model_path="path/to/yolov8n.pt",
-    model_device="cpu",  # or 'cuda:0'
+    model_device="cpu",  # or 'sdaa:0'
     model_confidence_threshold=0.4,
     source="path/to/dir",
     slice_height=256,

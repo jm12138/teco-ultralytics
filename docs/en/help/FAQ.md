@@ -10,7 +10,7 @@ This FAQ section addresses some common questions and issues users might encounte
 
 ## 1. What are the hardware requirements for running Ultralytics YOLO?
 
-Ultralytics YOLO can be run on a variety of hardware configurations, including CPUs, GPUs, and even some edge devices. However, for optimal performance and faster training and inference, we recommend using a GPU with a minimum of 8GB of memory. NVIDIA GPUs with CUDA support are ideal for this purpose.
+Ultralytics YOLO can be run on a variety of hardware configurations, including CPUs, GPUs, and even some edge devices. However, for optimal performance and faster training and inference, we recommend using a GPU with a minimum of 8GB of memory. NVIDIA GPUs with SDAA support are ideal for this purpose.
 
 ## 2. How do I fine-tune a pre-trained YOLO model on my custom dataset?
 

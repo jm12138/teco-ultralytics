@@ -33,7 +33,7 @@ import time
 from pathlib import Path
 
 import numpy as np
-import torch.cuda
+import torch.sdaa
 import yaml
 
 from ultralytics import YOLO, YOLOWorld
@@ -59,7 +59,7 @@ def benchmark(
         imgsz (int, optional): Image size for the benchmark. Default is 160.
         half (bool, optional): Use half-precision for the model if True. Default is False.
         int8 (bool, optional): Use int8-precision for the model if True. Default is False.
-        device (str, optional): Device to run the benchmark on, either 'cpu' or 'cuda'. Default is 'cpu'.
+        device (str, optional): Device to run the benchmark on, either 'cpu' or 'sdaa'. Default is 'cpu'.
         verbose (bool | float | optional): If True or a float, assert benchmarks pass with given metric.
             Default is False.
 
@@ -106,7 +106,7 @@ def benchmark(
                 assert not isinstance(model, YOLOWorld), "YOLOWorldv2 NCNN exports not supported yet"
             if "cpu" in device.type:
                 assert cpu, "inference not supported on CPU"
-            if "cuda" in device.type:
+            if "sdaa" in device.type:
                 assert gpu, "inference not supported on GPU"
 
             # Export
@@ -328,7 +328,7 @@ class ProfileModels:
         self.imgsz = imgsz
         self.half = half
         self.trt = trt  # run TensorRT profiling
-        self.device = device or torch.device(0 if torch.cuda.is_available() else "cpu")
+        self.device = device or torch.device(0 if torch.sdaa.is_available() else "cpu")
 
     def profile(self):
         """Logs the benchmarking results of a model, checks metrics against floor and returns the results."""
@@ -437,7 +437,7 @@ class ProfileModels:
         check_requirements("onnxruntime")
         import onnxruntime as ort
 
-        # Session with either 'TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider'
+        # Session with either 'TensorrtExecutionProvider', 'SDAAExecutionProvider', 'CPUExecutionProvider'
         sess_options = ort.SessionOptions()
         sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
         sess_options.intra_op_num_threads = 8  # Limit the number of threads
@@ -510,7 +510,7 @@ class ProfileModels:
     @staticmethod
     def print_table(table_rows):
         """Formats and prints a comparison table for different models with given statistics and performance data."""
-        gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "GPU"
+        gpu = torch.sdaa.get_device_name(0) if torch.sdaa.is_available() else "GPU"
         header = (
             f"| Model | size<br><sup>(pixels) | mAP<sup>val<br>50-95 | Speed<br><sup>CPU ONNX<br>(ms) | "
             f"Speed<br><sup>{gpu} TensorRT<br>(ms) | params<br><sup>(M) | FLOPs<br><sup>(B) |"

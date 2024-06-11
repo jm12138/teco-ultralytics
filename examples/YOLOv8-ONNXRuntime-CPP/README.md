@@ -8,7 +8,7 @@ This example demonstrates how to perform inference using YOLOv8 in C++ with ONNX
 
 - Friendly for deployment in the industrial sector.
 - Faster than OpenCV's DNN inference on both CPU and GPU.
-- Supports FP32 and FP16 CUDA acceleration.
+- Supports FP32 and FP16 SDAA acceleration.
 
 ## Note ☕
 
@@ -62,7 +62,7 @@ In order to run example, you also need to download coco.yaml. You can download t
 
 Note: The dependency on C++17 is due to the usage of the C++17 filesystem feature.
 
-Note (2): Due to ONNX Runtime, we need to use CUDA 11 and cuDNN 8. Keep in mind that this requirement might change in the future.
+Note (2): Due to ONNX Runtime, we need to use SDAA 11 and cuDNN 8. Keep in mind that this requirement might change in the future.
 
 ## Build 🛠️
 
@@ -100,7 +100,7 @@ params.rectConfidenceThreshold = 0.1;
 params.iouThreshold = 0.5;
 params.modelPath = "yolov8n.onnx";
 params.imgSize = { 640, 640 };
-params.cudaEnable = true;
+params.sdaaEnable = true;
 params.modelType = YOLO_DETECT_V8;
 yoloDetector->CreateSession(params);
 Detector(yoloDetector);

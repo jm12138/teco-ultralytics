@@ -1,5 +1,5 @@
 # Ultralytics YOLO 🚀, AGPL-3.0 license
-"""Functions for estimating the best YOLO batch size to use a fraction of the available CUDA memory in PyTorch."""
+"""Functions for estimating the best YOLO batch size to use a fraction of the available SDAA memory in PyTorch."""
 
 from copy import deepcopy
 
@@ -23,18 +23,18 @@ def check_train_batch_size(model, imgsz=640, amp=True, batch=-1):
         (int): Optimal batch size computed using the autobatch() function.
     """
 
-    with torch.cuda.amp.autocast(amp):
+    with torch.sdaa.amp.autocast(amp):
         return autobatch(deepcopy(model).train(), imgsz, fraction=batch if 0.0 < batch < 1.0 else 0.6)
 
 
 def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch):
     """
-    Automatically estimate the best YOLO batch size to use a fraction of the available CUDA memory.
+    Automatically estimate the best YOLO batch size to use a fraction of the available SDAA memory.
 
     Args:
         model (torch.nn.module): YOLO model to compute batch size for.
         imgsz (int, optional): The image size used as input for the YOLO model. Defaults to 640.
-        fraction (float, optional): The fraction of available CUDA memory to use. Defaults to 0.60.
+        fraction (float, optional): The fraction of available SDAA memory to use. Defaults to 0.60.
         batch_size (int, optional): The default batch size to use if an error is detected. Defaults to 16.
 
     Returns:
@@ -43,22 +43,22 @@ def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch):
 
     # Check device
     prefix = colorstr("AutoBatch: ")
-    LOGGER.info(f"{prefix}Computing optimal batch size for imgsz={imgsz} at {fraction * 100}% CUDA memory utilization.")
+    LOGGER.info(f"{prefix}Computing optimal batch size for imgsz={imgsz} at {fraction * 100}% SDAA memory utilization.")
     device = next(model.parameters()).device  # get model device
     if device.type == "cpu":
-        LOGGER.info(f"{prefix}CUDA not detected, using default CPU batch-size {batch_size}")
+        LOGGER.info(f"{prefix}SDAA not detected, using default CPU batch-size {batch_size}")
         return batch_size
     if torch.backends.cudnn.benchmark:
         LOGGER.info(f"{prefix} ⚠️ Requires torch.backends.cudnn.benchmark=False, using default batch-size {batch_size}")
         return batch_size
 
-    # Inspect CUDA memory
+    # Inspect SDAA memory
     gb = 1 << 30  # bytes to GiB (1024 ** 3)
-    d = str(device).upper()  # 'CUDA:0'
-    properties = torch.cuda.get_device_properties(device)  # device properties
+    d = str(device).upper()  # 'SDAA:0'
+    properties = torch.sdaa.get_device_properties(device)  # device properties
     t = properties.total_memory / gb  # GiB total
-    r = torch.cuda.memory_reserved(device) / gb  # GiB reserved
-    a = torch.cuda.memory_allocated(device) / gb  # GiB allocated
+    r = torch.sdaa.memory_reserved(device) / gb  # GiB reserved
+    a = torch.sdaa.memory_allocated(device) / gb  # GiB allocated
     f = t - (r + a)  # GiB free
     LOGGER.info(f"{prefix}{d} ({properties.name}) {t:.2f}G total, {r:.2f}G reserved, {a:.2f}G allocated, {f:.2f}G free")
 
@@ -78,7 +78,7 @@ def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch):
                 b = batch_sizes[max(i - 1, 0)]  # select prior safe point
         if b < 1 or b > 1024:  # b outside of safe range
             b = batch_size
-            LOGGER.info(f"{prefix}WARNING ⚠️ CUDA anomaly detected, using default batch-size {batch_size}.")
+            LOGGER.info(f"{prefix}WARNING ⚠️ SDAA anomaly detected, using default batch-size {batch_size}.")
 
         fraction = (np.polyval(p, b) + r + a) / t  # actual fraction predicted
         LOGGER.info(f"{prefix}Using batch-size {b} for {d} {t * fraction:.2f}G/{t:.2f}G ({fraction * 100:.0f}%) ✅")

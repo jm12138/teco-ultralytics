@@ -208,7 +208,7 @@ class Exporter:
             self.args.dynamic = True  # enforce dynamic to export TensorRT INT8; ensures ONNX is dynamic
         if self.args.optimize:
             assert not ncnn, "optimize=True not compatible with format='ncnn', i.e. use optimize=False"
-            assert self.device.type == "cpu", "optimize=True not compatible with cuda devices, i.e. use device='cpu'"
+            assert self.device.type == "cpu", "optimize=True not compatible with sdaa devices, i.e. use device='cpu'"
         if edgetpu:
             if not LINUX:
                 raise SystemError("Edge TPU export only supported on Linux. See https://coral.ai/docs/edgetpu/compiler")
@@ -388,7 +388,7 @@ class Exporter:
         """YOLOv8 ONNX export."""
         requirements = ["onnx>=1.12.0"]
         if self.args.simplify:
-            requirements += ["onnxslim==0.1.28", "onnxruntime" + ("-gpu" if torch.cuda.is_available() else "")]
+            requirements += ["onnxslim==0.1.28", "onnxruntime" + ("-gpu" if torch.sdaa.is_available() else "")]
         check_requirements(requirements)
         import onnx  # noqa
 
@@ -767,7 +767,7 @@ class Exporter:
                     """Get the next batch to use for calibration, as a list of device memory pointers."""
                     try:
                         im0s = next(self.data_iter)["img"] / 255.0
-                        im0s = im0s.to("cuda") if im0s.device.type == "cpu" else im0s
+                        im0s = im0s.to("sdaa") if im0s.device.type == "cpu" else im0s
                         return [int(im0s.data_ptr())]
                     except StopIteration:
                         # Return [] or None, signal to TensorRT there is no calibration data remaining
@@ -792,10 +792,10 @@ class Exporter:
         elif half:
             config.set_flag(trt.BuilderFlag.FP16)
 
-        # Free CUDA memory
+        # Free SDAA memory
         del self.model
         gc.collect()
-        torch.cuda.empty_cache()
+        torch.sdaa.empty_cache()
 
         # Write file
         build = builder.build_serialized_network if is_trt10 else builder.build_engine
@@ -812,11 +812,11 @@ class Exporter:
     @try_export
     def export_saved_model(self, prefix=colorstr("TensorFlow SavedModel:")):
         """YOLOv8 TensorFlow SavedModel export."""
-        cuda = torch.cuda.is_available()
+        sdaa = torch.sdaa.is_available()
         try:
             import tensorflow as tf  # noqa
         except ImportError:
-            suffix = "-macos" if MACOS else "-aarch64" if ARM64 else "" if cuda else "-cpu"
+            suffix = "-macos" if MACOS else "-aarch64" if ARM64 else "" if sdaa else "-cpu"
             version = ">=2.0.0"
             check_requirements(f"tensorflow{suffix}{version}")
             import tensorflow as tf  # noqa
@@ -831,7 +831,7 @@ class Exporter:
                 "onnx_graphsurgeon>=0.3.26",
                 "tflite_support<=0.4.3" if IS_JETSON else "tflite_support",  # fix ImportError 'GLIBCXX_3.4.29'
                 "flatbuffers>=23.5.26,<100",  # update old 'flatbuffers' included inside tensorflow package
-                "onnxruntime-gpu" if cuda else "onnxruntime",
+                "onnxruntime-gpu" if sdaa else "onnxruntime",
             ),
             cmds="--extra-index-url https://pypi.ngc.nvidia.com",  # onnx_graphsurgeon only on NVIDIA
         )

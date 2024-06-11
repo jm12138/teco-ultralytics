@@ -14,8 +14,8 @@
 #include <opencv2/opencv.hpp>
 #include "onnxruntime_cxx_api.h"
 
-#ifdef USE_CUDA
-#include <cuda_fp16.h>
+#ifdef USE_SDAA
+#include <sdaa_fp16.h>
 #endif
 
 
@@ -41,7 +41,7 @@ typedef struct _DL_INIT_PARAM
     float rectConfidenceThreshold = 0.6;
     float iouThreshold = 0.5;
     int	keyPointsNum = 2;//Note:kpt number for pose
-    bool cudaEnable = false;
+    bool sdaaEnable = false;
     int logSeverityLevel = 3;
     int intraOpNumThreads = 1;
 } DL_INIT_PARAM;
@@ -81,7 +81,7 @@ public:
 private:
     Ort::Env env;
     Ort::Session* session;
-    bool cudaEnable;
+    bool sdaaEnable;
     Ort::RunOptions options;
     std::vector<const char*> inputNodeNames;
     std::vector<const char*> outputNodeNames;

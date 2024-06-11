@@ -99,7 +99,7 @@ class ObjectDetection:
         self.end_time = 0
 
         # device information
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = "sdaa" if torch.sdaa.is_available() else "cpu"
 
     def predict(self, im0):
         """Run prediction using a YOLO model for the input image `im0`."""

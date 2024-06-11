@@ -12,7 +12,7 @@ YOLO_V8::~YOLO_V8() {
     delete session;
 }
 
-#ifdef USE_CUDA
+#ifdef USE_SDAA
 namespace Ort
 {
     template<>
@@ -109,12 +109,12 @@ char* YOLO_V8::CreateSession(DL_INIT_PARAM& iParams) {
         modelType = iParams.modelType;
         env = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "Yolo");
         Ort::SessionOptions sessionOption;
-        if (iParams.cudaEnable)
+        if (iParams.sdaaEnable)
         {
-            cudaEnable = iParams.cudaEnable;
-            OrtCUDAProviderOptions cudaOption;
-            cudaOption.device_id = 0;
-            sessionOption.AppendExecutionProvider_CUDA(cudaOption);
+            sdaaEnable = iParams.sdaaEnable;
+            OrtSDAAProviderOptions sdaaOption;
+            sdaaOption.device_id = 0;
+            sessionOption.AppendExecutionProvider_SDAA(sdaaOption);
         }
         sessionOption.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
         sessionOption.SetIntraOpNumThreads(iParams.intraOpNumThreads);
@@ -184,7 +184,7 @@ char* YOLO_V8::RunSession(cv::Mat& iImg, std::vector<DL_RESULT>& oResult) {
     }
     else
     {
-#ifdef USE_CUDA
+#ifdef USE_SDAA
         half* blob = new half[processedImg.total() * 3];
         BlobFromImage(processedImg, blob);
         std::vector<int64_t> inputNodeDims = { 1,3,imgSize.at(0),imgSize.at(1) };
@@ -288,9 +288,9 @@ char* YOLO_V8::TensorProcess(clock_t& starttime_1, cv::Mat& iImg, N& blob, std::
         double pre_process_time = (double)(starttime_2 - starttime_1) / CLOCKS_PER_SEC * 1000;
         double process_time = (double)(starttime_3 - starttime_2) / CLOCKS_PER_SEC * 1000;
         double post_process_time = (double)(starttime_4 - starttime_3) / CLOCKS_PER_SEC * 1000;
-        if (cudaEnable)
+        if (sdaaEnable)
         {
-            std::cout << "[YOLO_V8(CUDA)]: " << pre_process_time << "ms pre-process, " << process_time << "ms inference, " << post_process_time << "ms post-process." << std::endl;
+            std::cout << "[YOLO_V8(SDAA)]: " << pre_process_time << "ms pre-process, " << process_time << "ms inference, " << post_process_time << "ms post-process." << std::endl;
         }
         else
         {
@@ -349,14 +349,14 @@ char* YOLO_V8::WarmUpSession() {
         delete[] blob;
         clock_t starttime_4 = clock();
         double post_process_time = (double)(starttime_4 - starttime_1) / CLOCKS_PER_SEC * 1000;
-        if (cudaEnable)
+        if (sdaaEnable)
         {
-            std::cout << "[YOLO_V8(CUDA)]: " << "Cuda warm-up cost " << post_process_time << " ms. " << std::endl;
+            std::cout << "[YOLO_V8(SDAA)]: " << "Cuda warm-up cost " << post_process_time << " ms. " << std::endl;
         }
     }
     else
     {
-#ifdef USE_CUDA
+#ifdef USE_SDAA
         half* blob = new half[iImg.total() * 3];
         BlobFromImage(processedImg, blob);
         std::vector<int64_t> YOLO_input_node_dims = { 1,3,imgSize.at(0),imgSize.at(1) };
@@ -365,9 +365,9 @@ char* YOLO_V8::WarmUpSession() {
         delete[] blob;
         clock_t starttime_4 = clock();
         double post_process_time = (double)(starttime_4 - starttime_1) / CLOCKS_PER_SEC * 1000;
-        if (cudaEnable)
+        if (sdaaEnable)
         {
-            std::cout << "[YOLO_V8(CUDA)]: " << "Cuda warm-up cost " << post_process_time << " ms. " << std::endl;
+            std::cout << "[YOLO_V8(SDAA)]: " << "Cuda warm-up cost " << post_process_time << " ms. " << std::endl;
         }
 #endif
     }

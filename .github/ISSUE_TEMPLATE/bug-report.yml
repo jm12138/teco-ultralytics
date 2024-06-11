@@ -65,7 +65,7 @@ body:
         Install             git
         RAM                 16.00 GB
         CPU                 Apple M2
-        CUDA                None
+        SDAA                None
         ```
     validations:
       required: false

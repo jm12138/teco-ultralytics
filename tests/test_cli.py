@@ -5,7 +5,7 @@ import subprocess
 import pytest
 from PIL import Image
 
-from tests import CUDA_DEVICE_COUNT, CUDA_IS_AVAILABLE
+from tests import SDAA_DEVICE_COUNT, SDAA_IS_AVAILABLE
 from ultralytics.cfg import TASK2DATA, TASK2MODEL, TASKS
 from ultralytics.utils import ASSETS, WEIGHTS_DIR, checks
 
@@ -121,8 +121,8 @@ def test_mobilesam():
 # Slow Tests -----------------------------------------------------------------------------------------------------------
 @pytest.mark.slow
 @pytest.mark.parametrize("task,model,data", TASK_MODEL_DATA)
-@pytest.mark.skipif(not CUDA_IS_AVAILABLE, reason="CUDA is not available")
-@pytest.mark.skipif(CUDA_DEVICE_COUNT < 2, reason="DDP is not available")
+@pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
+@pytest.mark.skipif(SDAA_DEVICE_COUNT < 2, reason="DDP is not available")
 def test_train_gpu(task, model, data):
     """Test YOLO training on GPU(s) for various tasks and models."""
     run(f"yolo train {task} model={model} data={data} imgsz=32 epochs=1 device=0")  # single GPU

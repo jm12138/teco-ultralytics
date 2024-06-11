@@ -38,7 +38,7 @@ PyTorch is an open-source machine learning library widely used for applications 
 
 - **Security Considerations**: Regular patches for security issues, but security is largely dependent on the overall environment it's deployed in.
 
-- **Hardware Acceleration**: Supports CUDA for GPU acceleration, essential for speeding up model training and inference.
+- **Hardware Acceleration**: Supports SDAA for GPU acceleration, essential for speeding up model training and inference.
 
 #### TorchScript
 
@@ -56,7 +56,7 @@ TorchScript extends PyTorch's capabilities by allowing the exportation of models
 
 - **Security Considerations**: Offers improved security by enabling the running of models in environments without full Python installations.
 
-- **Hardware Acceleration**: Inherits PyTorch's CUDA support, ensuring efficient GPU utilization.
+- **Hardware Acceleration**: Inherits PyTorch's SDAA support, ensuring efficient GPU utilization.
 
 #### ONNX
 
@@ -264,8 +264,8 @@ The following table provides a snapshot of the various deployment options availa
 
 | Deployment Option | Performance Benchmarks                          | Compatibility and Integration                  | Community Support and Ecosystem               | Case Studies                               | Maintenance and Updates                     | Security Considerations                           | Hardware Acceleration              |
 | ----------------- | ----------------------------------------------- | ---------------------------------------------- | --------------------------------------------- | ------------------------------------------ | ------------------------------------------- | ------------------------------------------------- | ---------------------------------- |
-| PyTorch           | Good flexibility; may trade off raw performance | Excellent with Python libraries                | Extensive resources and community             | Research and prototypes                    | Regular, active development                 | Dependent on deployment environment               | CUDA support for GPU acceleration  |
-| TorchScript       | Better for production than PyTorch              | Smooth transition from PyTorch to C++          | Specialized but narrower than PyTorch         | Industry where Python is a bottleneck      | Consistent updates with PyTorch             | Improved security without full Python             | Inherits CUDA support from PyTorch |
+| PyTorch           | Good flexibility; may trade off raw performance | Excellent with Python libraries                | Extensive resources and community             | Research and prototypes                    | Regular, active development                 | Dependent on deployment environment               | SDAA support for GPU acceleration  |
+| TorchScript       | Better for production than PyTorch              | Smooth transition from PyTorch to C++          | Specialized but narrower than PyTorch         | Industry where Python is a bottleneck      | Consistent updates with PyTorch             | Improved security without full Python             | Inherits SDAA support from PyTorch |
 | ONNX              | Variable depending on runtime                   | High across different frameworks               | Broad ecosystem, supported by many orgs       | Flexibility across ML frameworks           | Regular updates for new operations          | Ensure secure conversion and deployment practices | Various hardware optimizations     |
 | OpenVINO          | Optimized for Intel hardware                    | Best within Intel ecosystem                    | Solid in computer vision domain               | IoT and edge with Intel hardware           | Regular updates for Intel hardware          | Robust features for sensitive applications        | Tailored for Intel hardware        |
 | TensorRT          | Top-tier on NVIDIA GPUs                         | Best for NVIDIA hardware                       | Strong network through NVIDIA                 | Real-time video and image inference        | Frequent updates for new GPUs               | Emphasis on security                              | Designed for NVIDIA GPUs           |

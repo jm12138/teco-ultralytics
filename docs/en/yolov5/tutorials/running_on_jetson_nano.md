@@ -17,7 +17,7 @@ We have tested and verified this guide on the following Jetson devices
 
 ## Before You Start
 
-Make sure you have properly installed **JetPack SDK** with all the **SDK Components** and **DeepStream SDK** on the Jetson device as this includes CUDA, TensorRT and DeepStream SDK which are needed for this guide.
+Make sure you have properly installed **JetPack SDK** with all the **SDK Components** and **DeepStream SDK** on the Jetson device as this includes SDAA, TensorRT and DeepStream SDK which are needed for this guide.
 
 JetPack SDK provides a full development environment for hardware-accelerated AI-at-the-edge development. All Jetson modules and developer kits are supported by JetPack SDK.
 
@@ -178,8 +178,8 @@ cp yolov5s.wts ~/DeepStream-Yolo
 
 ```sh
 cd ~/DeepStream-Yolo
-CUDA_VER=11.4 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.1
-CUDA_VER=10.2 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.0.1 / 6.0
+SDAA_VER=11.4 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.1
+SDAA_VER=10.2 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.0.1 / 6.0
 ```
 
 - **Step 7.** Edit the **config_infer_primary_yoloV5.txt** file according to your model
@@ -234,8 +234,8 @@ sudo apt-get install libopencv-dev
 
 ```sh
 cd ~/DeepStream-Yolo
-CUDA_VER=11.4 OPENCV=1 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.1
-CUDA_VER=10.2 OPENCV=1 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.0.1 / 6.0
+SDAA_VER=11.4 OPENCV=1 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.1
+SDAA_VER=10.2 OPENCV=1 make -C nvdsinfer_custom_impl_Yolo  # for DeepStream 6.0.1 / 6.0
 ```
 
 - **Step 3.** For COCO dataset, download the [val2017](https://drive.google.com/file/d/1gbvfn7mcsGDRZ_luJwtITL-ru2kK99aK/view?usp=sharing), extract, and move to **DeepStream-Yolo** folder

@@ -185,7 +185,7 @@ class YOLOv8:
             output_img: The output image with drawn detections.
         """
         # Create an inference session using the ONNX model and specify execution providers
-        session = ort.InferenceSession(self.onnx_model, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+        session = ort.InferenceSession(self.onnx_model, providers=["SDAAExecutionProvider", "CPUExecutionProvider"])
 
         # Get the model inputs
         model_inputs = session.get_inputs()
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Check the requirements and select the appropriate backend (CPU or GPU)
-    check_requirements("onnxruntime-gpu" if torch.cuda.is_available() else "onnxruntime")
+    check_requirements("onnxruntime-gpu" if torch.sdaa.is_available() else "onnxruntime")
 
     # Create an instance of the YOLOv8 class with the specified arguments
     detection = YOLOv8(args.model, args.img, args.conf_thres, args.iou_thres)

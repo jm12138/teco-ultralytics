@@ -127,7 +127,7 @@ def build_grounding(cfg, img_path, json_file, batch, mode="train", rect=False, s
 def build_dataloader(dataset, batch, workers, shuffle=True, rank=-1):
     """Return an InfiniteDataLoader or DataLoader for training or validation set."""
     batch = min(batch, len(dataset))
-    nd = torch.cuda.device_count()  # number of CUDA devices
+    nd = torch.sdaa.device_count()  # number of SDAA devices
     nw = min(os.cpu_count() // max(nd, 1), workers)  # number of workers
     sampler = None if rank == -1 else distributed.DistributedSampler(dataset, shuffle=shuffle)
     generator = torch.Generator()

@@ -209,9 +209,9 @@ class Annotator:
         Plot masks on image.
 
         Args:
-            masks (tensor): Predicted masks on cuda, shape: [n, h, w]
+            masks (tensor): Predicted masks on sdaa, shape: [n, h, w]
             colors (List[List[Int]]): Colors for predicted masks, [[r, g, b] * n]
-            im_gpu (tensor): Image is in cuda, shape: [3, h, w], range: [0, 1]
+            im_gpu (tensor): Image is in sdaa, shape: [3, h, w], range: [0, 1]
             alpha (float): Mask transparency: 0.0 fully transparent, 1.0 opaque
             retina_masks (bool): Whether to use high resolution masks or not. Defaults to False.
         """

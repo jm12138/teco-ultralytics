@@ -581,7 +581,7 @@ def check_yolo(verbose=True, device=""):
 
 
 def collect_system_info():
-    """Collect and print relevant system information including OS, Python, RAM, CPU, and CUDA."""
+    """Collect and print relevant system information including OS, Python, RAM, CPU, and SDAA."""
 
     import psutil
 
@@ -597,7 +597,7 @@ def collect_system_info():
         f"{'Install':<20}{'git' if IS_GIT_DIR else 'pip' if IS_PIP_PACKAGE else 'other'}\n"
         f"{'RAM':<20}{ram_info:.2f} GB\n"
         f"{'CPU':<20}{get_cpu_info()}\n"
-        f"{'CUDA':<20}{torch.version.cuda if torch and torch.cuda.is_available() else None}\n"
+        f"{'SDAA':<20}{torch.version.sdaa if torch and torch.sdaa.is_available() else None}\n"
     )
 
     for r in parse_requirements(package="ultralytics"):
@@ -634,7 +634,7 @@ def check_amp(model):
         from ultralytics import YOLO
         from ultralytics.utils.checks import check_amp
 
-        model = YOLO('yolov8n.pt').model.cuda()
+        model = YOLO('yolov8n.pt').model.sdaa()
         check_amp(model)
         ```
 
@@ -643,12 +643,12 @@ def check_amp(model):
     """
     device = next(model.parameters()).device  # get model device
     if device.type in {"cpu", "mps"}:
-        return False  # AMP only used on CUDA devices
+        return False  # AMP only used on SDAA devices
 
     def amp_allclose(m, im):
         """All close FP32 vs AMP results."""
         a = m(im, device=device, verbose=False)[0].boxes.data  # FP32 inference
-        with torch.cuda.amp.autocast(True):
+        with torch.sdaa.amp.autocast(True):
             b = m(im, device=device, verbose=False)[0].boxes.data  # AMP inference
         del m
         return a.shape == b.shape and torch.allclose(a, b.float(), atol=0.5)  # close to 0.5 absolute tolerance
@@ -705,7 +705,7 @@ def print_args(args: Optional[dict] = None, show_file=True, show_func=False):
     LOGGER.info(colorstr(s) + ", ".join(f"{k}={strip_auth(v)}" for k, v in args.items()))
 
 
-def cuda_device_count() -> int:
+def sdaa_device_count() -> int:
     """
     Get the number of NVIDIA GPUs available in the environment.
 
@@ -727,14 +727,14 @@ def cuda_device_count() -> int:
         return 0
 
 
-def cuda_is_available() -> bool:
+def sdaa_is_available() -> bool:
     """
-    Check if CUDA is available in the environment.
+    Check if SDAA is available in the environment.
 
     Returns:
         (bool): True if one or more NVIDIA GPUs are available, False otherwise.
     """
-    return cuda_device_count() > 0
+    return sdaa_device_count() > 0
 
 
 # Define constants

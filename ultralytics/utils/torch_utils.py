@@ -85,7 +85,7 @@ def select_device(device="", batch=0, newline=False, verbose=True):
 
     Args:
         device (str | torch.device, optional): Device string or torch.device object.
-            Options are 'None', 'cpu', or 'cuda', or '0' or '0,1,2,3'. Defaults to an empty string, which auto-selects
+            Options are 'None', 'cpu', or 'sdaa', or '0' or '0,1,2,3'. Defaults to an empty string, which auto-selects
             the first available GPU, or CPU if no GPU is available.
         batch (int, optional): Batch size being used in your model. Defaults to 0.
         newline (bool, optional): If True, adds a newline at the end of the log string. Defaults to False.
@@ -99,14 +99,14 @@ def select_device(device="", batch=0, newline=False, verbose=True):
             devices when using multiple GPUs.
 
     Examples:
-        >>> select_device('cuda:0')
-        device(type='cuda', index=0)
+        >>> select_device('sdaa:0')
+        device(type='sdaa', index=0)
 
         >>> select_device('cpu')
         device(type='cpu')
 
     Note:
-        Sets the 'CUDA_VISIBLE_DEVICES' environment variable for specifying which GPUs to use.
+        Sets the 'SDAA_VISIBLE_DEVICES' environment variable for specifying which GPUs to use.
     """
 
     if isinstance(device, torch.device):
@@ -114,37 +114,37 @@ def select_device(device="", batch=0, newline=False, verbose=True):
 
     s = f"Ultralytics YOLOv{__version__} 🚀 Python-{PYTHON_VERSION} torch-{torch.__version__} "
     device = str(device).lower()
-    for remove in "cuda:", "none", "(", ")", "[", "]", "'", " ":
-        device = device.replace(remove, "")  # to string, 'cuda:0' -> '0' and '(0, 1)' -> '0,1'
+    for remove in "sdaa:", "none", "(", ")", "[", "]", "'", " ":
+        device = device.replace(remove, "")  # to string, 'sdaa:0' -> '0' and '(0, 1)' -> '0,1'
     cpu = device == "cpu"
     mps = device in {"mps", "mps:0"}  # Apple Metal Performance Shaders (MPS)
     if cpu or mps:
-        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # force torch.cuda.is_available() = False
+        os.environ["SDAA_VISIBLE_DEVICES"] = "-1"  # force torch.sdaa.is_available() = False
     elif device:  # non-cpu device requested
-        if device == "cuda":
+        if device == "sdaa":
             device = "0"
-        visible = os.environ.get("CUDA_VISIBLE_DEVICES", None)
-        os.environ["CUDA_VISIBLE_DEVICES"] = device  # set environment variable - must be before assert is_available()
-        if not (torch.cuda.is_available() and torch.cuda.device_count() >= len(device.split(","))):
+        visible = os.environ.get("SDAA_VISIBLE_DEVICES", None)
+        os.environ["SDAA_VISIBLE_DEVICES"] = device  # set environment variable - must be before assert is_available()
+        if not (torch.sdaa.is_available() and torch.sdaa.device_count() >= len(device.split(","))):
             LOGGER.info(s)
             install = (
                 "See https://pytorch.org/get-started/locally/ for up-to-date torch install instructions if no "
-                "CUDA devices are seen by torch.\n"
-                if torch.cuda.device_count() == 0
+                "SDAA devices are seen by torch.\n"
+                if torch.sdaa.device_count() == 0
                 else ""
             )
             raise ValueError(
-                f"Invalid CUDA 'device={device}' requested."
-                f" Use 'device=cpu' or pass valid CUDA device(s) if available,"
+                f"Invalid SDAA 'device={device}' requested."
+                f" Use 'device=cpu' or pass valid SDAA device(s) if available,"
                 f" i.e. 'device=0' or 'device=0,1,2,3' for Multi-GPU.\n"
-                f"\ntorch.cuda.is_available(): {torch.cuda.is_available()}"
-                f"\ntorch.cuda.device_count(): {torch.cuda.device_count()}"
-                f"\nos.environ['CUDA_VISIBLE_DEVICES']: {visible}\n"
+                f"\ntorch.sdaa.is_available(): {torch.sdaa.is_available()}"
+                f"\ntorch.sdaa.device_count(): {torch.sdaa.device_count()}"
+                f"\nos.environ['SDAA_VISIBLE_DEVICES']: {visible}\n"
                 f"{install}"
             )
 
-    if not cpu and not mps and torch.cuda.is_available():  # prefer GPU if available
-        devices = device.split(",") if device else "0"  # range(torch.cuda.device_count())  # i.e. 0,1,6,7
+    if not cpu and not mps and torch.sdaa.is_available():  # prefer GPU if available
+        devices = device.split(",") if device else "0"  # range(torch.sdaa.device_count())  # i.e. 0,1,6,7
         n = len(devices)  # device count
         if n > 1:  # multi-GPU
             if batch < 1:
@@ -159,9 +159,9 @@ def select_device(device="", batch=0, newline=False, verbose=True):
                 )
         space = " " * (len(s) + 1)
         for i, d in enumerate(devices):
-            p = torch.cuda.get_device_properties(i)
-            s += f"{'' if i == 0 else space}CUDA:{d} ({p.name}, {p.total_memory / (1 << 20):.0f}MiB)\n"  # bytes to MB
-        arg = "cuda:0"
+            p = torch.sdaa.get_device_properties(i)
+            s += f"{'' if i == 0 else space}SDAA:{d} ({p.name}, {p.total_memory / (1 << 20):.0f}MiB)\n"  # bytes to MB
+        arg = "sdaa:0"
     elif mps and TORCH_2_0 and torch.backends.mps.is_available():
         # Prefer MPS if available
         s += f"MPS ({get_cpu_info()})\n"
@@ -177,8 +177,8 @@ def select_device(device="", batch=0, newline=False, verbose=True):
 
 def time_sync():
     """PyTorch-accurate time."""
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
+    if torch.sdaa.is_available():
+        torch.sdaa.synchronize()
     return time.time()
 
 
@@ -439,8 +439,8 @@ def init_seeds(seed=0, deterministic=False):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # for Multi-GPU, exception safe
+    torch.sdaa.manual_seed(seed)
+    torch.sdaa.manual_seed_all(seed)  # for Multi-GPU, exception safe
     # torch.backends.cudnn.benchmark = True  # AutoBatch problem https://github.com/ultralytics/yolov5/issues/9287
     if deterministic:
         if TORCH_2_0:
@@ -594,7 +594,7 @@ def profile(input, ops, n=10, device=None):
                         t[2] = float("nan")
                     tf += (t[1] - t[0]) * 1000 / n  # ms per op forward
                     tb += (t[2] - t[1]) * 1000 / n  # ms per op backward
-                mem = torch.cuda.memory_reserved() / 1e9 if torch.cuda.is_available() else 0  # (GB)
+                mem = torch.sdaa.memory_reserved() / 1e9 if torch.sdaa.is_available() else 0  # (GB)
                 s_in, s_out = (tuple(x.shape) if isinstance(x, torch.Tensor) else "list" for x in (x, y))  # shapes
                 p = sum(x.numel() for x in m.parameters()) if isinstance(m, nn.Module) else 0  # parameters
                 LOGGER.info(f"{p:12}{flops:12.4g}{mem:>14.3f}{tf:14.4g}{tb:14.4g}{str(s_in):>24s}{str(s_out):>24s}")
@@ -603,7 +603,7 @@ def profile(input, ops, n=10, device=None):
                 LOGGER.info(e)
                 results.append(None)
             gc.collect()  # attempt to free unused memory
-            torch.cuda.empty_cache()
+            torch.sdaa.empty_cache()
     return results
 
 

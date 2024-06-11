@@ -35,7 +35,7 @@ impl YOLOv8 {
         // execution provider
         let ep = if config.trt {
             OrtEP::Trt(config.device_id)
-        } else if config.cuda {
+        } else if config.sdaa {
             OrtEP::Cuda(config.device_id)
         } else {
             OrtEP::Cpu

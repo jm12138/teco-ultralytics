@@ -103,10 +103,10 @@ keywords: Ultralytics, YOLO, utility functions, version checks, requirements, im
 
 <br><br>
 
-## ::: ultralytics.utils.checks.cuda_device_count
+## ::: ultralytics.utils.checks.sdaa_device_count
 
 <br><br>
 
-## ::: ultralytics.utils.checks.cuda_is_available
+## ::: ultralytics.utils.checks.sdaa_is_available
 
 <br><br>

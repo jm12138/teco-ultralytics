@@ -8,8 +8,8 @@ CFG = "yolov8n.yaml"
 SOURCE = ASSETS / "bus.jpg"
 TMP = (ROOT / "../tests/tmp").resolve()  # temp directory for test files
 IS_TMP_WRITEABLE = is_dir_writeable(TMP)
-CUDA_IS_AVAILABLE = checks.cuda_is_available()
-CUDA_DEVICE_COUNT = checks.cuda_device_count()
+SDAA_IS_AVAILABLE = checks.sdaa_is_available()
+SDAA_DEVICE_COUNT = checks.sdaa_device_count()
 
 __all__ = (
     "MODEL",
@@ -17,6 +17,6 @@ __all__ = (
     "SOURCE",
     "TMP",
     "IS_TMP_WRITEABLE",
-    "CUDA_IS_AVAILABLE",
-    "CUDA_DEVICE_COUNT",
+    "SDAA_IS_AVAILABLE",
+    "SDAA_DEVICE_COUNT",
 )

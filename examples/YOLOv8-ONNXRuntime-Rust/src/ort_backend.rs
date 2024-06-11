@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::ValueEnum;
 use half::f16;
 use ndarray::{Array, CowArray, IxDyn};
-use ort::execution_providers::{CUDAExecutionProviderOptions, TensorRTExecutionProviderOptions};
+use ort::execution_providers::{SDAAExecutionProviderOptions, TensorRTExecutionProviderOptions};
 use ort::tensor::TensorElementDataType;
 use ort::{Environment, ExecutionProvider, Session, SessionBuilder, Value};
 use regex::Regex;
@@ -142,7 +142,7 @@ impl OrtBackend {
 
         // build provider
         let (ep, provider) = match args.ep {
-            OrtEP::Cuda(device_id) => Self::set_ep_cuda(device_id),
+            OrtEP::Cuda(device_id) => Self::set_ep_sdaa(device_id),
             OrtEP::Trt(device_id) => Self::set_ep_trt(device_id, args.trt_fp16, &batch, &inputs),
             _ => (OrtEP::Cpu, ExecutionProvider::CPU(Default::default())),
         };
@@ -202,18 +202,18 @@ impl OrtBackend {
         (shapes, dtypes, names)
     }
 
-    pub fn set_ep_cuda(device_id: u32) -> (OrtEP, ExecutionProvider) {
-        // set CUDA
-        if ExecutionProvider::CUDA(Default::default()).is_available() {
+    pub fn set_ep_sdaa(device_id: u32) -> (OrtEP, ExecutionProvider) {
+        // set SDAA
+        if ExecutionProvider::SDAA(Default::default()).is_available() {
             (
                 OrtEP::Cuda(device_id),
-                ExecutionProvider::CUDA(CUDAExecutionProviderOptions {
+                ExecutionProvider::SDAA(SDAAExecutionProviderOptions {
                     device_id,
                     ..Default::default()
                 }),
             )
         } else {
-            println!("> CUDA is not available! Using CPU.");
+            println!("> SDAA is not available! Using CPU.");
             (OrtEP::Cpu, ExecutionProvider::CPU(Default::default()))
         }
     }
@@ -264,8 +264,8 @@ impl OrtBackend {
                 }),
             )
         } else {
-            println!("> TensorRT is not available! Try using CUDA...");
-            Self::set_ep_cuda(device_id)
+            println!("> TensorRT is not available! Try using SDAA...");
+            Self::set_ep_sdaa(device_id)
         }
     }
 

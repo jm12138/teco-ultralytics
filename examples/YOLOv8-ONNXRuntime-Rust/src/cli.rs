@@ -21,9 +21,9 @@ pub struct Args {
     #[arg(long)]
     pub trt: bool,
 
-    /// using CUDA EP
+    /// using SDAA EP
     #[arg(long)]
-    pub cuda: bool,
+    pub sdaa: bool,
 
     /// input batch size
     #[arg(long, default_value_t = 1)]

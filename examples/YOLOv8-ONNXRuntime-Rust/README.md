@@ -13,7 +13,7 @@ Newly updated YOLOv8 example code is located in this repository (https://github.
 
 - Support `Classification`, `Segmentation`, `Detection`, `Pose(Keypoints)-Detection`, `OBB` tasks.
 - Support `FP16` & `FP32` ONNX models.
-- Support `CPU`, `CUDA` and `TensorRT` execution provider to accelerate computation.
+- Support `CPU`, `SDAA` and `TensorRT` execution provider to accelerate computation.
 - Support dynamic input shapes(`batch`, `width`, `height`).
 
 ## Installation
@@ -42,10 +42,10 @@ export LD_LIBRARY_PATH=/home/qweasd/Documents/onnxruntime-linux-x64-gpu-1.16.3/l
 source ~/.bashrc
 ```
 
-### 3. \[Optional\] Install CUDA & CuDNN & TensorRT
+### 3. \[Optional\] Install SDAA & CuDNN & TensorRT
 
-- CUDA execution provider requires CUDA v11.6+.
-- TensorRT execution provider requires CUDA v11.4+ and TensorRT v8.4+.
+- SDAA execution provider requires SDAA v11.6+.
+- TensorRT execution provider requires SDAA v11.4+ and TensorRT v8.4+.
 
 ## Get Started
 
@@ -76,10 +76,10 @@ It will perform inference with the ONNX model on the source image.
 cargo run --release -- --model <MODEL> --source <SOURCE>
 ```
 
-Set `--cuda` to use CUDA execution provider to speed up inference.
+Set `--sdaa` to use SDAA execution provider to speed up inference.
 
 ```bash
-cargo run --release -- --cuda --model <MODEL> --source <SOURCE>
+cargo run --release -- --sdaa --model <MODEL> --source <SOURCE>
 ```
 
 Set `--trt` to use TensorRT execution provider, and you can set `--fp16` at the same time to use TensorRT FP16 engine.
@@ -91,7 +91,7 @@ cargo run --release -- --trt --fp16 --model <MODEL> --source <SOURCE>
 Set `--device_id` to select which device to run. When you have only one GPU, and you set `device_id` to 1 will not cause program panic, the `ort` would automatically fall back to `CPU` EP.
 
 ```bash
-cargo run --release -- --cuda --device_id 0 --model <MODEL> --source <SOURCE>
+cargo run --release -- --sdaa --device_id 0 --model <MODEL> --source <SOURCE>
 ```
 
 Set `--batch` to do multi-batch-size inference.
@@ -99,13 +99,13 @@ Set `--batch` to do multi-batch-size inference.
 If you're using `--trt`, you can also set `--batch-min` and `--batch-max` to explicitly specify min/max/opt batch for dynamic batch input.(https://onnxruntime.ai/docs/execution-providers/TensorRT-ExecutionProvider.html#explicit-shape-range-for-dynamic-shape-input).(Note that the ONNX model should exported with dynamic shapes)
 
 ```bash
-cargo run --release -- --cuda --batch 2 --model <MODEL> --source <SOURCE>
+cargo run --release -- --sdaa --batch 2 --model <MODEL> --source <SOURCE>
 ```
 
 Set `--height` and `--width` to do dynamic image size inference. (Note that the ONNX model should exported with dynamic shapes)
 
 ```bash
-cargo run --release -- --cuda --width 480 --height 640 --model <MODEL> --source <SOURCE>
+cargo run --release -- --sdaa --width 480 --height 640 --model <MODEL> --source <SOURCE>
 ```
 
 Set `--profile` to check time consumed in each stage.(Note that the model usually needs to take 1~3 times dry run to warmup. Make sure to run enough times to evaluate the result.)
@@ -198,10 +198,10 @@ Summary:
 
 ### Object Detection
 
-Using `CUDA` EP and dynamic image size `--height 640 --width 480`
+Using `SDAA` EP and dynamic image size `--height 640 --width 480`
 
 ```bash
-cargo run --release -- --cuda --model ../assets/weights/yolov8m-dynamic.onnx --source ../assets/images/bus.jpg --plot --height 640 --width 480
+cargo run --release -- --sdaa --model ../assets/weights/yolov8m-dynamic.onnx --source ../assets/images/bus.jpg --plot --height 640 --width 480
 ```
 
 ### Pose Detection

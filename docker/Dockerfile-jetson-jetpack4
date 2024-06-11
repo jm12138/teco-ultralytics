@@ -2,8 +2,8 @@
 # Builds ultralytics/ultralytics:jetson-jetpack4 image on DockerHub https://hub.docker.com/r/ultralytics/ultralytics
 # Supports JetPack4.x for YOLOv8 on Jetson Nano, TX2, Xavier NX, AGX Xavier
 
-# Start FROM https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-cuda
-FROM nvcr.io/nvidia/l4t-cuda:10.2.460-runtime
+# Start FROM https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-sdaa
+FROM nvcr.io/nvidia/l4t-sdaa:10.2.460-runtime
 
 # Set environment variables
 ENV APP_HOME /usr/src/ultralytics

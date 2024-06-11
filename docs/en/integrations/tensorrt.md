@@ -413,7 +413,7 @@ Expand sections below for information on how these models were exported and test
         result = model.predict(
             [img] * 8,  # batch=8 of the same image
             verbose=False,
-            device="cuda",
+            device="sdaa",
         )
     ```
 
@@ -430,7 +430,7 @@ Expand sections below for information on how these models were exported and test
         batch=1,
         imgsz=640,
         verbose=False,
-        device="cuda",
+        device="sdaa",
     )
     ```
 

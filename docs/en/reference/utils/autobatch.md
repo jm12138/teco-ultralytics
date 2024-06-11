@@ -1,6 +1,6 @@
 ---
-description: Discover how to automatically estimate the best YOLO batch size for optimal CUDA memory usage in PyTorch using Ultralytics' autobatch utility.
-keywords: YOLO batch size, CUDA memory, PyTorch autobatch, Ultralytics, machine learning, optimal batch size, training batch size, YOLO model
+description: Discover how to automatically estimate the best YOLO batch size for optimal SDAA memory usage in PyTorch using Ultralytics' autobatch utility.
+keywords: YOLO batch size, SDAA memory, PyTorch autobatch, Ultralytics, machine learning, optimal batch size, training batch size, YOLO model
 ---
 
 # Reference for `ultralytics/utils/autobatch.py`

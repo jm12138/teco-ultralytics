@@ -1,7 +1,7 @@
 ---
 comments: true
 description: Comprehensive guide to troubleshoot common YOLOv8 issues, from installation errors to model training challenges. Enhance your Ultralytics projects with our expert tips.
-keywords: YOLO, YOLOv8, troubleshooting, installation errors, model training, GPU issues, Ultralytics, AI, computer vision, deep learning, Python, CUDA, PyTorch, debugging
+keywords: YOLO, YOLOv8, troubleshooting, installation errors, model training, GPU issues, Ultralytics, AI, computer vision, deep learning, Python, SDAA, PyTorch, debugging
 ---
 
 # Troubleshooting Common YOLO Issues
@@ -55,9 +55,9 @@ Additionally, here are some common installation issues users have encountered, a
 
 - Running YOLOv8 on GPU - If you're having trouble running YOLOv8 on GPU, consider the following troubleshooting steps:
 
-    - **Verify CUDA Compatibility and Installation**: Ensure your GPU is CUDA compatible and that CUDA is correctly installed. Use the `nvidia-smi` command to check the status of your NVIDIA GPU and CUDA version.
+    - **Verify SDAA Compatibility and Installation**: Ensure your GPU is SDAA compatible and that SDAA is correctly installed. Use the `nvidia-smi` command to check the status of your NVIDIA GPU and SDAA version.
 
-    - **Check PyTorch and CUDA Integration**: Ensure PyTorch can utilize CUDA by running `import torch; print(torch.cuda.is_available())` in a Python terminal. If it returns 'True', PyTorch is set up to use CUDA.
+    - **Check PyTorch and SDAA Integration**: Ensure PyTorch can utilize SDAA by running `import torch; print(torch.sdaa.is_available())` in a Python terminal. If it returns 'True', PyTorch is set up to use SDAA.
 
     - **Environment Activation**: Ensure you're in the correct environment where all necessary packages are installed.
 
@@ -242,7 +242,7 @@ for box in boxes:
 
 **Issue:** Deploying models in a multi-GPU environment can sometimes lead to unexpected behaviors like unexpected memory usage, inconsistent results across GPUs, etc.
 
-**Solution:** Check for default GPU initialization. Some frameworks, like PyTorch, might initialize CUDA operations on a default GPU before transitioning to the designated GPUs. To bypass unexpected default initializations, specify the GPU directly during deployment and prediction. Then, use tools to monitor GPU utilization and memory usage to identify any anomalies in real-time. Also, ensure you're using the latest version of the framework or library.
+**Solution:** Check for default GPU initialization. Some frameworks, like PyTorch, might initialize SDAA operations on a default GPU before transitioning to the designated GPUs. To bypass unexpected default initializations, specify the GPU directly during deployment and prediction. Then, use tools to monitor GPU utilization and memory usage to identify any anomalies in real-time. Also, ensure you're using the latest version of the framework or library.
 
 #### Model Conversion/Exporting Issues
 

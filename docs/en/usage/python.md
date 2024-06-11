@@ -179,7 +179,7 @@ Predict mode is used for making predictions using a trained YOLOv8 model on new 
 
         # Each result is composed of torch.Tensor by default,
         # in which you can easily use following functionality:
-        result = result.cuda()
+        result = result.sdaa()
         result = result.cpu()
         result = result.to("cpu")
         result = result.numpy()
@@ -205,7 +205,7 @@ Export mode is used for exporting a YOLOv8 model to a format that can be used fo
 
     === "Export to TensorRT"
 
-        Export an official YOLOv8n model to TensorRT on `device=0` for acceleration on CUDA devices.
+        Export an official YOLOv8n model to TensorRT on `device=0` for acceleration on SDAA devices.
         ```python
         from ultralytics import YOLO
 

@@ -150,7 +150,7 @@ pip install onnxruntime_gpu-1.17.0-cp38-cp38-linux_aarch64.whl
 
 Here we support to run Ultralytics on legacy hardware such as the Jetson Nano. Currently we use Docker to achieve this.
 
-Execute the below command to pull the Docker container and run on Jetson. This is based on [l4t-cuda](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-cuda) docker image which contains CUDA in a L4T environment.
+Execute the below command to pull the Docker container and run on Jetson. This is based on [l4t-sdaa](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-sdaa) docker image which contains SDAA in a L4T environment.
 
 ```bash
 t=ultralytics/ultralytics:latest-jetson-jetpack4 && sudo docker pull $t && sudo docker run -it --ipc=host --runtime=nvidia $t

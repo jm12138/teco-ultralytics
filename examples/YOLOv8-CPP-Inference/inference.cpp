@@ -5,7 +5,7 @@ Inference::Inference(const std::string &onnxModelPath, const cv::Size &modelInpu
     modelPath = onnxModelPath;
     modelShape = modelInputShape;
     classesPath = classesTxtFile;
-    cudaEnabled = runWithCuda;
+    sdaaEnabled = runWithCuda;
 
     loadOnnxNetwork();
     // loadClassesFromFile(); The classes are hard-coded for this example
@@ -160,11 +160,11 @@ void Inference::loadClassesFromFile()
 void Inference::loadOnnxNetwork()
 {
     net = cv::dnn::readNetFromONNX(modelPath);
-    if (cudaEnabled)
+    if (sdaaEnabled)
     {
-        std::cout << "\nRunning on CUDA" << std::endl;
-        net.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
-        net.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
+        std::cout << "\nRunning on SDAA" << std::endl;
+        net.setPreferableBackend(cv::dnn::DNN_BACKEND_SDAA);
+        net.setPreferableTarget(cv::dnn::DNN_TARGET_SDAA);
     }
     else
     {
