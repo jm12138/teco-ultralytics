@@ -211,9 +211,9 @@ class BaseTrainer:
         torch.sdaa.set_device(RANK)
         self.device = torch.device("sdaa", RANK)
         # LOGGER.info(f'DDP info: RANK {RANK}, WORLD_SIZE {world_size}, DEVICE {self.device}')
-        os.environ["TORCH_NCCL_BLOCKING_WAIT"] = "1"  # set to enforce timeout
+        os.environ["TORCH_TCCL_BLOCKING_WAIT"] = "1"  # set to enforce timeout
         dist.init_process_group(
-            backend="nccl" if dist.is_nccl_available() else "gloo",
+            backend="tccl",
             timeout=timedelta(seconds=10800),  # 3 hours
             rank=RANK,
             world_size=world_size,
