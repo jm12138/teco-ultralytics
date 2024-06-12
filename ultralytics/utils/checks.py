@@ -716,7 +716,7 @@ def sdaa_device_count() -> int:
     try:
         # Run the nvidia-smi command and capture its output
         output = subprocess.check_output(
-            ["nvidia-smi", "--query-gpu=count", "--format=csv,noheader,nounits"], encoding="utf-8"
+            ["teco-smi", "--query-tcaicard=count", "--format=csv,noheader"], encoding="utf-8"
         )
 
         # Take the first line and strip any leading/trailing white space
