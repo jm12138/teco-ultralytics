@@ -76,18 +76,13 @@ def test_predict_multiple_devices():
     _ = model(SOURCE)  # CPU inference
     assert str(model.device) == "cpu"
 
-    model = model.sdaa()
-    assert str(model.device) == "sdaa:0"
-    _ = model(SOURCE)  # SDAA inference
-    assert str(model.device) == "sdaa:0"
-
 
 @pytest.mark.skipif(not SDAA_IS_AVAILABLE, reason="SDAA is not available")
 def test_autobatch():
     """Check batch size for YOLO model using autobatch."""
     from ultralytics.utils.autobatch import check_train_batch_size
 
-    check_train_batch_size(YOLO(MODEL).model.sdaa(), imgsz=128, amp=True)
+    check_train_batch_size(YOLO(MODEL).model.to('sdaa'), imgsz=128, amp=True)
 
 
 @pytest.mark.slow

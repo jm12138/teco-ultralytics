@@ -48,7 +48,7 @@ class BaseTensor(SimpleClass):
 
     def sdaa(self):
         """Return a copy of the tensor on GPU memory."""
-        return self.__class__(torch.as_tensor(self.data).sdaa(), self.orig_shape)
+        return self.__class__(torch.as_tensor(self.data).to('sdaa'), self.orig_shape)
 
     def to(self, *args, **kwargs):
         """Return a copy of the tensor with the specified device and dtype."""

@@ -103,7 +103,6 @@ Models can be transferred to any device after creation:
 
 ```python
 model.cpu()  # CPU
-model.sdaa()  # GPU
 model.to(device)  # i.e. device=torch.device(0)
 ```
 
