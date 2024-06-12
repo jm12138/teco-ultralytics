@@ -11,6 +11,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 import torch
+import torch_sdaa
 import torch.nn as nn
 from PIL import Image
 

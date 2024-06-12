@@ -8,6 +8,7 @@ import time
 import cv2
 import numpy as np
 import torch
+import torch_sdaa
 import torch.nn.functional as F
 
 from ultralytics.utils import LOGGER

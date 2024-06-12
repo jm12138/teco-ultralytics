@@ -63,6 +63,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch_sdaa
 
 from ultralytics.cfg import TASK2DATA, get_cfg
 from ultralytics.data import build_dataloader

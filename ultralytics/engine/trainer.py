@@ -18,6 +18,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch_sdaa
 from torch import distributed as dist
 from torch import nn, optim
 

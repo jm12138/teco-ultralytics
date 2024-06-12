@@ -33,7 +33,8 @@ import time
 from pathlib import Path
 
 import numpy as np
-import torch.sdaa
+import torch
+import torch_sdaa
 import yaml
 
 from ultralytics import YOLO, YOLOWorld

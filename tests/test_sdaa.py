@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 import torch
+import torch_sdaa
 
 from tests import SDAA_DEVICE_COUNT, SDAA_IS_AVAILABLE, MODEL, SOURCE
 from ultralytics import YOLO

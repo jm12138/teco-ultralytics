@@ -12,6 +12,7 @@ from typing import Union
 
 import numpy as np
 import torch
+import torch_sdaa
 import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F

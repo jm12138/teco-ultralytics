@@ -1,6 +1,7 @@
 # Ultralytics YOLO 🚀, AGPL-3.0 license
 
 import torch
+import torch_sdaa
 import torch.nn as nn
 import torch.nn.functional as F
 

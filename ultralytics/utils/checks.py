@@ -18,6 +18,7 @@ import cv2
 import numpy as np
 import requests
 import torch
+import torch_sdaa
 
 from ultralytics.utils import (
     ASSETS,

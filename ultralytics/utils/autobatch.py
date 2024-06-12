@@ -5,6 +5,7 @@ from copy import deepcopy
 
 import numpy as np
 import torch
+import torch_sdaa
 
 from ultralytics.utils import DEFAULT_CFG, LOGGER, colorstr
 from ultralytics.utils.torch_utils import profile
