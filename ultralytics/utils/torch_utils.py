@@ -158,10 +158,10 @@ def select_device(device="", batch=0, newline=False, verbose=True):
                     f"'batch={batch}' must be a multiple of GPU count {n}. Try 'batch={batch // n * n}' or "
                     f"'batch={batch // n * n + n}', the nearest batch sizes evenly divisible by {n}."
                 )
-        space = " " * (len(s) + 1)
-        for i, d in enumerate(devices):
-            p = torch.sdaa.get_device_properties(i)
-            s += f"{'' if i == 0 else space}SDAA:{d} ({p.name}, {p.total_memory / (1 << 20):.0f}MiB)\n"  # bytes to MB
+        # space = " " * (len(s) + 1)
+        # for i, d in enumerate(devices):
+        #     p = torch.sdaa.get_device_properties(i)
+        #     s += f"{'' if i == 0 else space}SDAA:{d} ({p.name}, {p.total_memory / (1 << 20):.0f}MiB)\n"  # bytes to MB
         arg = "sdaa:0"
     elif mps and TORCH_2_0 and torch.backends.mps.is_available():
         # Prefer MPS if available

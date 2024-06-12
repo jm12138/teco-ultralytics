@@ -54,14 +54,14 @@ def autobatch(model, imgsz=640, fraction=0.60, batch_size=DEFAULT_CFG.batch):
         return batch_size
 
     # Inspect SDAA memory
-    gb = 1 << 30  # bytes to GiB (1024 ** 3)
-    d = str(device).upper()  # 'SDAA:0'
-    properties = torch.sdaa.get_device_properties(device)  # device properties
-    t = properties.total_memory / gb  # GiB total
-    r = torch.sdaa.memory_reserved(device) / gb  # GiB reserved
-    a = torch.sdaa.memory_allocated(device) / gb  # GiB allocated
-    f = t - (r + a)  # GiB free
-    LOGGER.info(f"{prefix}{d} ({properties.name}) {t:.2f}G total, {r:.2f}G reserved, {a:.2f}G allocated, {f:.2f}G free")
+    # gb = 1 << 30  # bytes to GiB (1024 ** 3)
+    # d = str(device).upper()  # 'SDAA:0'
+    # properties = torch.sdaa.get_device_properties(device)  # device properties
+    # t = properties.total_memory / gb  # GiB total
+    # r = torch.sdaa.memory_reserved(device) / gb  # GiB reserved
+    # a = torch.sdaa.memory_allocated(device) / gb  # GiB allocated
+    # f = t - (r + a)  # GiB free
+    # LOGGER.info(f"{prefix}{d} ({properties.name}) {t:.2f}G total, {r:.2f}G reserved, {a:.2f}G allocated, {f:.2f}G free")
 
     # Profile batch sizes
     batch_sizes = [1, 2, 4, 8, 16]
